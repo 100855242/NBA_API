@@ -1,0 +1,33 @@
+version 0.0
+os: linux
+files:
+  - source: DotNetAuthentication/build_output
+    destination: /home/ubuntu/*
+  - source: scripts/virtualhost.conf
+    destination: /home/ubuntu/*
+hooks:
+  ApplicationStop:
+    - location: scripts/stop_service
+	  timeout: 300
+	  runas: root
+	  
+  BeforeInstall:
+    - location: scripts/remove_application
+	  timeout: 300
+	  runas: root
+	  
+  AfterInstall:
+    - location: scripts/install_dotnet
+	  timeout: 500
+	  runas: root
+	  
+    - location: scripts/install_httpd
+	  timeout: 300
+	  runas: root
+
+  ApplicationStart:
+    - location: scripts/start_service
+	  timeout: 300
+	  runas: root
+
+	  
